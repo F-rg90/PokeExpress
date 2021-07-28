@@ -8,28 +8,21 @@ app.get('/', function (req, res) {
       res.send( 'Welcome to the pokemon app! ' );
 });
 
-/*Database Setup */
 
-app.get('/pokemon', (req, res) =>{
-  res.send(pokemon)
-})
 
-app.set('views engine', 'jsx')
+app.set('view engine', 'jsx')
 app.engine('jsx', require('express-react-views').createEngine())
+
+
+
 
 /*
 INDUCES
 */
 
-
 /*INDEX*/
-
-app.get('/', function (req, res) {
-      res.send( 'Welcome to the pokemon app! ' );
-})
-
 app.get('/pokemon', (req, res) =>{
-  res.render('Index', );
+  res.render('Index',)
 })
 
 
@@ -41,7 +34,13 @@ app.get('/pokemon/new', (req, res)=> {
 
 /*DELETE*/
 
+
+
+
 /*UPDATE*/
+
+
+
 
 /*CREATE*/
 app.post('/pokemon', (req, res)=> {
