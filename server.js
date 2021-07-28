@@ -66,17 +66,18 @@ app.post('/pokemon', (req, res)=> {
 
 /*SHOW*/
 app.get('/pokemon/:id', (req, res) => {
-  Pokemon.findById(req.params.id, (err, foundPokemon)=>{
-    if(err){
-      res.status(404).send({
-        msg:err.message
-      })
-    }else{
-      res.render('Show', {
-        pokemon: foundPokemon
-      })
-    }
-  })
+  res.send(req.params.id);
+//   Pokemon.findById(req.params.id, (err, foundPokemon)=>{
+//     if(err){
+//       res.status(404).send({
+//         msg:err.message
+//       })
+//     }else{
+//       res.render('Show', {
+//         pokemon: foundPokemon
+//       })
+//     }
+//   })
 })
 
 
