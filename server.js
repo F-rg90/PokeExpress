@@ -1,33 +1,68 @@
-//require('dotenv').config();
+require('dotenv').config();
 const express = require('express');
 const app = express();
-const PORT = process.env.PORT || 3000;
-const pokemon = require('./models/pokemon');
+const PORT = 3000;
+const Pokemon = require('./models/pokemon');
 
 app.get('/', function (req, res) {
       res.send( 'Welcome to the pokemon app! ' );
 });
 
 
+//database//
+const mongoose = require('mongoose');
+mongoose.connect(process.env.MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  useCreateIndex: true,
+  useFindAndModify: false
+})
+
+mongoose.connection.once('open', () => {
+  console.log('Mango Good')
+})
+
+
 
 app.set('view engine', 'jsx')
 app.engine('jsx', require('express-react-views').createEngine())
+app.use((req, res, next) => {
+  console.log('**********************')
+  console.log('***********Middleware checking in***********')
+  console.log('I run before all routes')
+  console.log('**********************')
+  next()
+})
 
 
-
+app.use(express.urlencoded({ extended: true }))
 
 /*
 INDUCES
 */
 
 /*INDEX*/
-app.get('/pokemon', (req, res) =>{
-  res.render('Index',)
+app.get('/pokemon/', (req, res) =>{
+res.send('This is the pokemon app!')
+})
+
+app.get('/:pokemon', (req, res) =>{
+  Pokemon.find({}, (err, foundPokemon)=>{
+    if(err) {
+      res.status(404).send({
+        msg:err.message
+      })
+    }else{
+      res.render('Index', {pokemon: foundPokemon})
+    }
+  })
 })
 
 
+
+
 /*NEW*/
-app.get('/pokemon/new', (req, res)=> {
+app.get('/pokemon/new', (req, res) => {
   res.render('New')
 })
 
@@ -43,7 +78,7 @@ app.get('/pokemon/new', (req, res)=> {
 
 
 /*CREATE*/
-app.post('/pokemon', (req, res)=> {
+app.post('/pokemon', (req, res) => {
   Pokemon.create(req.body, (err, createdPokemon)=>{
     if(err) {
       res.status(404).send({
@@ -61,23 +96,24 @@ app.post('/pokemon', (req, res)=> {
 
 
 
-
 /*EDIT*/
+
+
 
 /*SHOW*/
 app.get('/pokemon/:id', (req, res) => {
-  res.send(req.params.id);
-//   Pokemon.findById(req.params.id, (err, foundPokemon)=>{
-//     if(err){
-//       res.status(404).send({
-//         msg:err.message
-//       })
-//     }else{
-//       res.render('Show', {
-//         pokemon: foundPokemon
-//       })
-//     }
-//   })
+  res.render('Show', {pokemon: pokemon[req.params.id]});
+  Pokemon.findById(req.params.id, (err, foundPokemon)=>{
+    if(err){
+      res.status(404).send({
+        msg: err.message
+      })
+    }else{
+      res.render('Show', {
+        pokemon: foundPokemon
+      })
+    }
+  })
 })
 
 
