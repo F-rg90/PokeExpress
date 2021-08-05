@@ -41,6 +41,20 @@ app.use(express.urlencoded({ extended: true }))
 INDUCES
 */
 
+app.get('/pokemon/seed', (req, res)=>{
+  Pokemon.create([
+    {name: "squirtle", img: "http://img.pokemondb.net/artwork/squirtle"},
+  	{name: "ivysaur", img: "http://img.pokemondb.net/artwork/ivysaur.jpg"},
+  	{name: "charizard", img: "http://img.pokemondb.net/artwork/charizard.jpg"},
+  ], (err, data)=>{
+    res.redirect('/pokemon')
+  })
+})
+
+
+
+
+
 /*INDEX*/
 app.get('/pokemon/', (req, res) =>{
 res.send('This is the pokemon app!')
