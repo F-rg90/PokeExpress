@@ -56,11 +56,7 @@ app.get('/pokemon/seed', (req, res)=>{
 
 
 /*INDEX*/
-app.get('/pokemon/', (req, res) =>{
-res.send('This is the pokemon app!')
-})
-
-app.get('/:pokemon', (req, res) =>{
+app.get('/pokemon', (req, res) =>{
   Pokemon.find({}, (err, foundPokemon)=>{
     if(err) {
       res.status(404).send({
@@ -116,7 +112,6 @@ app.post('/pokemon', (req, res) => {
 
 /*SHOW*/
 app.get('/pokemon/:id', (req, res) => {
-  res.render('Show', {pokemon: pokemon[req.params.id]});
   Pokemon.findById(req.params.id, (err, foundPokemon)=>{
     if(err){
       res.status(404).send({
